@@ -9,9 +9,6 @@ function getComputerChoice() {
     let random = Math.floor(Math.random() *3)
     return choices[random]
 }
-// Call function to assign the choice
-let comp_choice = getComputerChoice()
-console.log(comp_choice)
 
 // Prompt method for user input
 function getHumanChoice() {
@@ -19,58 +16,72 @@ function getHumanChoice() {
     return user_choice
 }
 
-// Variable keeps track of human score
-let humanScore = 0
-
-// Variable keep track of comp score
-let computerScore = 0
-
 
 // Function decides on a winner
-    // If 
-function playRound(humanChoice, computerChoice) {
+    // If statements based on rules of game
+    // Increment scores by 1 point depending on winner
+function playRound(humanChoice, computerChoice, humanScore, computerScore) {
     let human_lower = humanChoice.toLowerCase()
     if (human_lower === 'rock'){
-        if (comp_choice === 'scissors'){
+        if (computerChoice === 'scissors'){
             humanScore += 1;
             console.log("You Win! Rock beats scissors.")
         }
-        if (comp_choice === 'paper'){
+        else if (computerChoice === 'paper'){
             computerScore += 1;
             console.log("You Lose! Paper beats rock.")
         }
     }
-    if (human_lower === 'paper'){
-        if (comp_choice === 'scissors'){
+    else if (human_lower === 'paper'){
+        if (computerChoice === 'scissors'){
             computerScore += 1;
             console.log("You Lose! Scissors beat paper.")
         }
-        if (comp_choice === 'rock'){
+        else if (computerChoice === 'rock'){
             humanScore += 1;
             console.log("You Win! Paper beats rock.")
         }
     }
-    if (human_lower === 'scissors'){
-        if (comp_choice === 'rock'){
+    else if (human_lower === 'scissors'){
+        if (computerChoice === 'rock'){
             computerScore += 1;
             console.log("You Lose! Rock beats scissors.")
         }
-        if (comp_choice === 'paper'){
+        else if (computerChoice === 'paper'){
             humanScore += 1;
             console.log("You Win! Scissors beats paper.")
         }
     }
+    console.log("After round, Human score: " + humanScore + " Comp: " + computerScore)
+    return [humanScore, computerScore]
 }
 
-const humanSelection = getHumanChoice();
-const computerSelection = getComputerChoice();
-
-playRound(humanSelection, computerSelection);
 
 
+function playGame(){
+    // Variable keeps track of human score
+    let humanScore = 0
 
+    // Variable keep track of comp score
+    let computerScore = 0
 
+    let i = 0;
+    while(i < 5){
+        const humanSelection = getHumanChoice();
+        const computerSelection = getComputerChoice();
+        [humanScore, computerScore] = playRound(humanSelection, computerSelection, humanScore, computerScore);
+        i += 1
+    }
+    if(humanScore > computerScore){
+        console.log("The human wins!")  
+    }
+    else if(computerScore > humanScore){
+        console.log("The computer wins!")
+    }
 
+}
+
+playGame()
 
 
 
