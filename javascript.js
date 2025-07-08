@@ -52,7 +52,7 @@ function playRound(humanChoice, computerChoice, humanScore, computerScore) {
             console.log("You Win! Scissors beats paper.")
         }
     }
-    console.log("After round, Human score: " + humanScore + " Comp: " + computerScore)
+
     return [humanScore, computerScore]
 }
 
