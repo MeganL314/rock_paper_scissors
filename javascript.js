@@ -5,6 +5,9 @@
 
 const choices = ["rock", "paper", "scissors"];
 
+
+
+
 function getComputerChoice() {
     let random = Math.floor(Math.random() *3)
     return choices[random]
@@ -17,71 +20,101 @@ function getHumanChoice() {
 }
 
 
+const output = document.querySelector("#myOutput");
+const content = document.createElement("div");
+content.classList.add("content");
+
 // Function decides on a winner
     // If statements based on rules of game
     // Increment scores by 1 point depending on winner
 function playRound(humanChoice, computerChoice, humanScore, computerScore) {
     let human_lower = humanChoice.toLowerCase()
+
     if (human_lower === 'rock'){
         if (computerChoice === 'scissors'){
             humanScore += 1;
-            console.log("You Win! Rock beats scissors.")
+            content.textContent = "You Win! Rock beats scissors.";
         }
         else if (computerChoice === 'paper'){
             computerScore += 1;
-            console.log("You Lose! Paper beats rock.")
+            content.textContent = "You Lose! Paper beats rock.";
         }
     }
     else if (human_lower === 'paper'){
         if (computerChoice === 'scissors'){
             computerScore += 1;
-            console.log("You Lose! Scissors beat paper.")
+            content.textContent = "You Lose! Scissors beat paper.";
         }
         else if (computerChoice === 'rock'){
             humanScore += 1;
-            console.log("You Win! Paper beats rock.")
+            content.textContent = "You Win! Paper beats rock.";
         }
     }
     else if (human_lower === 'scissors'){
         if (computerChoice === 'rock'){
             computerScore += 1;
-            console.log("You Lose! Rock beats scissors.")
+            content.textContent = "You Lose! Rock beats scissors.";
         }
         else if (computerChoice === 'paper'){
             humanScore += 1;
-            console.log("You Win! Scissors beats paper.")
+            content.textContent = "You Win! Scissors beats paper.";
         }
     }
+    if (human_lower === computerChoice){
+        content.textContent = "Tie!";
+    }
 
+    output.appendChild(content);
     return [humanScore, computerScore]
 }
 
 
 
-function playGame(){
-    // Variable keeps track of human score
-    let humanScore = 0
 
-    // Variable keep track of comp score
-    let computerScore = 0
 
-    let i = 0;
-    while(i < 5){
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-        [humanScore, computerScore] = playRound(humanSelection, computerSelection, humanScore, computerScore);
-        i += 1
+// event listener that call your playRound function with the 
+// correct playerSelection every time a button is clicked
+// buttons is a node list. It looks and acts much like an array.
+const buttons = document.querySelectorAll("button");
+let humanScore = 0;
+let computerScore = 0;
+let round = 1;
+
+const score = document.createElement("div");
+score.classList.add("content");
+
+// we use the .forEach method to iterate through each button
+buttons.forEach((button) => {
+  // and for each one we add a 'click' listener
+  button.addEventListener("click", () => {
+    console.log("Click at round", round);
+
+    [humanScore, computerScore] = playRound(button.id, getComputerChoice(), humanScore, computerScore);
+    score.innerHTML = `After round ${round}: <br>Human: ${humanScore} &nbsp; Computer: ${computerScore}`;
+    output.appendChild(score);
+
+    round = round + 1;
+
+
+    if (round == 6){
+        if(humanScore > computerScore){
+            score.innerHTML = "The human wins! Click a button to restart game.";
+            output.appendChild(score);
+        }
+        else if(computerScore > humanScore){
+            score.innerHTML ="The computer wins! Click a button to restart game.";
+            output.appendChild(score);
+        }
+        humanScore = 0;
+        computerScore = 0;
+        round = 1;
     }
-    if(humanScore > computerScore){
-        console.log("The human wins!")  
-    }
-    else if(computerScore > humanScore){
-        console.log("The computer wins!")
-    }
 
-}
+  });
+});
 
-playGame()
+
+// playGame()
 
 
 
